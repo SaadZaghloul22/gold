@@ -60,16 +60,7 @@ class _ChartScreenState extends State<ChartScreen> {
               }),
             ),
             const SizedBox(height: 10),
-            Wrap(spacing: 6, runSpacing: 6, children: [
-              for (final k in karats)
-                ChoiceChip(
-                  visualDensity: VisualDensity.compact,
-                  showCheckmark: false,
-                  label: Text('عيار $k'),
-                  selected: karat == k,
-                  onSelected: (_) => setState(() => karat = k),
-                ),
-            ]),
+            KaratPicker(value: karat, onChanged: (k) => setState(() => karat = k)),
             const SizedBox(height: 12),
             Card(
               child: Padding(

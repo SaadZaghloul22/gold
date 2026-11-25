@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../core/format.dart';
 import '../core/theme.dart';
+import '../core/gold_math.dart';
 import '../data/countries.dart';
 import '../state/prices.dart';
 
@@ -153,3 +154,24 @@ class SectionTitle extends StatelessWidget {
 const disclaimerText =
     'الأسعار استرشادية محسوبة من السعر العالمي للذهب (السبوت) وأسعار صرف العملات، ولا تشمل المصنعية أو الضريبة، '
     'وقد تختلف عن أسعار محلات الصاغة والبنوك.';
+
+/// Full-width karat selector: 24 · 22 · 21 · 18 · 14.
+class KaratPicker extends StatelessWidget {
+  const KaratPicker({super.key, required this.value, required this.onChanged});
+  final int value;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) => Row(children: [
+        const Text('العيار', style: TextStyle(fontWeight: FontWeight.w700)),
+        const SizedBox(width: 10),
+        Expanded(
+          child: SegmentedButton<int>(
+            segments: [for (final k in karats) ButtonSegment(value: k, label: Text('$k'))],
+            selected: {value},
+            showSelectedIcon: false,
+            onSelectionChanged: (s) => onChanged(s.first),
+          ),
+        ),
+      ]);
+}

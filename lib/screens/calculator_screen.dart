@@ -111,10 +111,7 @@ class _JewelryCalcState extends State<_JewelryCalc> with AutomaticKeepAliveClien
       children: [
         const Align(alignment: AlignmentDirectional.centerStart, child: CountryButton()),
         const SizedBox(height: 12),
-        Wrap(spacing: 6, runSpacing: 6, children: [
-          for (final k in karats)
-            ChoiceChip(visualDensity: VisualDensity.compact, showCheckmark: false, label: Text('عيار $k'), selected: karat == k, onSelected: (_) => setState(() => karat = k)),
-        ]),
+        KaratPicker(value: karat, onChanged: (k) => setState(() => karat = k)),
         const SizedBox(height: 4),
         if (price != null)
           Text('سعر جرام عيار $karat الآن: ${moneyIn(price, c)}',

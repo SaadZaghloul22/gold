@@ -8,6 +8,7 @@ import '../core/theme.dart';
 import '../services/alert_service.dart';
 import '../state/alerts.dart';
 import '../state/prices.dart';
+import '../widgets/common.dart';
 
 class AlertsScreen extends StatelessWidget {
   const AlertsScreen({super.key});
@@ -180,20 +181,14 @@ class _AddAlertSheetState extends State<_AddAlertSheet> {
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Text('تنبيه سعر — ${c.flag} ${c.name}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         const SizedBox(height: 12),
-        Wrap(spacing: 6, runSpacing: 6, children: [
-          for (final k in karats)
-            ChoiceChip(
-              visualDensity: VisualDensity.compact,
-              showCheckmark: false,
-              label: Text('عيار $k'),
-              selected: karat == k,
-              onSelected: (_) => setState(() {
-                karat = k;
-                final n = p.gram(k);
-                if (n != null) target.text = (n * (above ? 1.01 : .99)).toStringAsFixed(c.decimals);
-              }),
-            ),
-        ]),
+        KaratPicker(
+          value: karat,
+          onChanged: (k) => setState(() {
+            karat = k;
+            final n = p.gram(k);
+            if (n != null) target.text = (n * (above ? 1.01 : .99)).toStringAsFixed(c.decimals);
+          }),
+        ),
         const SizedBox(height: 12),
         SegmentedButton<bool>(
           segments: const [
