@@ -1,0 +1,4 @@
+00:00 +0: loading /home/runner/work/gold/gold/test_shots/shots_test.dart
+00:00 +0: store and review screenshots
+SHOTS: xau=3519.699951 sar24=424.35336268426386 hist=365 change=-0.49716726121004345
+00:04 +1: All tests passed!

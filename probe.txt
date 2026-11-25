@@ -1,0 +1,10 @@
+
+::group::✅ probe sources
+PROBE https://api.gold-api.com/price/XAU -> 200 {"currency":"USD","currencySymbol":"$","exchangeRate":1.0,"name":"Gold","price":3519.699951,"symbol":"XAU","updatedAt":"2026-11-25T12:25:45Z","updatedAtReadable":"a few seconds ago"}
+PROBE https://data-asg.goldprice.org/dbXRates/USD -> 403 Forbidden
+
+PROBE https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD -> 200 [{"topo":{"platform":"SwissquoteCapitalMarkets","server":"Live7"},"spreadProfilePrices":[{"spreadProfile":"premium","bidSpread":25.40,"askSpread":25.40,"bid":3519.756,"ask":3520.414},{"spreadProfile":"prime","bidSpread":24.40,"askSpread":24.40,"bid":3519.766,"ask":3520.404},{"spreadProfile":"elite",
+PROBE https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X?range=1d&interval=1d -> 404 {"chart":{"result":null,"error":{"code":"Not Found","description":"No data found, symbol may be delisted"}}}
+::endgroup::
+
+🎉 1 test passed.
