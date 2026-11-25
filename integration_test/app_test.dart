@@ -66,6 +66,8 @@ void main() {
     await settle(tester);
     expect(find.text('الجنيه الذهب'), findsOneWidget);
     await binding.takeScreenshot('04_prices_egypt');
+    await tester.drag(find.byType(ListView).first, const Offset(0, 800));
+    await settle(tester);
 
     await tester.tap(find.byKey(const Key('country-button')).first);
     await settle(tester);
