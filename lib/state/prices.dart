@@ -161,7 +161,11 @@ class PriceController extends ChangeNotifier {
   }
 
   /// Auto refresh every 2 minutes while the app is in the foreground.
+  /// Off in screenshot tests, where data is loaded once up front.
+  bool autoRefresh = true;
+
   void start() {
+    if (!autoRefresh) return;
     unawaited(refresh());
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(minutes: 2), (_) => refresh(silent: true));

@@ -52,7 +52,12 @@ class GoldTheme {
   }
 
   static ThemeData _base(ColorScheme scheme, Color bg) {
-    final base = ThemeData(colorScheme: scheme, useMaterial3: true, fontFamily: 'Cairo');
+    final base = ThemeData(
+      colorScheme: scheme,
+      useMaterial3: true,
+      fontFamily: 'Cairo',
+      fontFamilyFallback: const ['NotoColorEmoji'],
+    );
     return base.copyWith(
       scaffoldBackgroundColor: bg,
       appBarTheme: AppBarTheme(
