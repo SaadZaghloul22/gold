@@ -50,18 +50,31 @@ class Quote {
 
   static Quote? fromJson(Map<String, dynamic>? j) {
     if (j == null) return null;
-    final xau = (j['xau'] as num?)?.toDouble();
+    final xau = _num(j['xau']);
     final at = DateTime.tryParse('${j['sourceAt']}');
     if (xau == null || at == null) return null;
     return Quote(
       xau: xau,
-      xag: (j['xag'] as num?)?.toDouble(),
+      xag: _num(j['xag']),
       sourceAt: at,
       fetchedAt: DateTime.tryParse('${j['fetchedAt']}') ?? at,
-      fx: ((j['fx'] as Map?) ?? const {}).map((k, v) => MapEntry('$k', (v as num).toDouble())),
+      fx: _rates(j['fx']),
       fxAt: DateTime.tryParse('${j['fxAt']}'),
     );
   }
+}
+
+double? _num(Object? v) => v is num ? v.toDouble() : null;
+
+/// Currency -> rate map, skipping anything that is not a number.
+Map<String, double> _rates(Object? m) {
+  final out = <String, double>{};
+  if (m is Map) {
+    m.forEach((k, v) {
+      if (v is num) out['$k'] = v.toDouble();
+    });
+  }
+  return out;
 }
 
 /// One day of history: USD per gram of 24K and that day's exchange rates.
@@ -110,14 +123,14 @@ class PriceService {
   Future<Quote> fetch({bool needFx = true}) async {
     final old = cached;
     final gold = await _getJson('https://api.gold-api.com/price/XAU');
-    final xau = (gold['price'] as num?)?.toDouble();
+    final xau = _num(gold['price']);
     if (xau == null || xau < 500) throw Exception('bad gold price');
     final sourceAt = DateTime.tryParse('${gold['updatedAt']}')?.toLocal() ?? DateTime.now();
 
     double? xag = old?.xag;
     try {
       final silver = await _getJson('https://api.gold-api.com/price/XAG');
-      final v = (silver['price'] as num?)?.toDouble();
+      final v = _num(silver['price']);
       if (v != null && v > 1) xag = v;
     } catch (e) {
       debugPrint('silver: $e');
@@ -129,9 +142,9 @@ class PriceService {
     if (needFx && fxOld) {
       try {
         final j = await _getJson('https://open.er-api.com/v6/latest/USD');
-        final rates = (j['rates'] as Map?)?.map((k, v) => MapEntry('$k', (v as num).toDouble()));
-        final t = (j['time_last_update_unix'] as num?)?.toInt();
-        if (rates != null && rates.isNotEmpty) {
+        final rates = _rates(j['rates']);
+        final t = _num(j['time_last_update_unix'])?.toInt();
+        if (rates.isNotEmpty) {
           fx = rates;
           fxAt = t != null ? DateTime.fromMillisecondsSinceEpoch(t * 1000) : DateTime.now();
         }
@@ -150,9 +163,9 @@ class PriceService {
     for (final r in rows) {
       if (r is! Map) continue;
       final day = DateTime.tryParse('${r['day']}');
-      final g = (r['usdGram'] as num?)?.toDouble();
+      final g = _num(r['usdGram']);
       if (day == null || g == null || g <= 0) continue;
-      final fx = ((r['fx'] as Map?) ?? const {}).map((k, v) => MapEntry('$k', (v as num).toDouble()));
+      final fx = _rates(r['fx']);
       out.add(HistoryDay(day, g, fx));
     }
     out.sort((a, b) => a.day.compareTo(b.day));
