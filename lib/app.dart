@@ -55,7 +55,8 @@ class HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _prices = context.read<PriceController>();
     _prices.addListener(_checkAlerts);
-    _prices.start();
+    // start after the first frame: refreshing notifies listeners, which must not happen during build
+    WidgetsBinding.instance.addPostFrameCallback((_) => _prices.start());
   }
 
   @override

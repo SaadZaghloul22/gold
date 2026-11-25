@@ -70,6 +70,7 @@ class _CountrySheetState extends State<_CountrySheet> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
           child: TextField(
+            key: const Key('country-search'),
             decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: 'ابحث عن دولة أو عملة'),
             onChanged: (v) => setState(() => q = v.trim()),
           ),
@@ -80,6 +81,7 @@ class _CountrySheetState extends State<_CountrySheet> {
             itemBuilder: (_, i) {
               final c = list[i];
               return ListTile(
+                key: Key('country-${c.code}'),
                 leading: Text(c.flag, style: const TextStyle(fontSize: 26)),
                 title: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                 subtitle: Text('${c.unit} · ${c.currency}'),

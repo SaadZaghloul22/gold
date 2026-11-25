@@ -57,9 +57,9 @@ void main() {
     await tester.tap(find.byKey(const Key('country-button')).first);
     await settle(tester);
     await binding.takeScreenshot('03_country_picker');
-    await tester.enterText(find.byType(TextField).last, 'مصر');
+    await tester.enterText(find.byKey(const Key('country-search')), 'مصر');
     await settle(tester);
-    await tapText(tester, 'مصر');
+    await tester.tap(find.byKey(const Key('country-EG')));
     await settle(tester, 2000);
     expect(prices.country.code, 'EG');
     await tester.drag(find.byType(ListView).first, const Offset(0, -400));
@@ -69,9 +69,9 @@ void main() {
 
     await tester.tap(find.byKey(const Key('country-button')).first);
     await settle(tester);
-    await tester.enterText(find.byType(TextField).last, 'الإمارات');
+    await tester.enterText(find.byKey(const Key('country-search')), 'الإمارات');
     await settle(tester);
-    await tapText(tester, 'الإمارات');
+    await tester.tap(find.byKey(const Key('country-AE')));
     await settle(tester, 2000);
     expect(find.text('التولة'), findsOneWidget);
     await binding.takeScreenshot('05_prices_uae');
