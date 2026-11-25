@@ -128,11 +128,49 @@ class PriceService {
     }
   }
 
+  /// Some sources rate-limit the default Dart client; identify as a normal mobile client.
+  static const _headers = {'User-Agent': 'Mozilla/5.0 (Linux; Android 14) GoldPricesToday/1.0', 'Accept': 'application/json'};
+
+  /// Spot price (USD/oz) from the main source, or the Swissquote public feed as a backup.
+  Future<(double, DateTime)?> _spot(String metal, {int attempts = 2}) async {
+    try {
+      final j = await _getJson('https://api.gold-api.com/price/$metal', attempts: attempts);
+      final v = _num(j['price']);
+      if (v != null && v > 0) {
+        return (v, DateTime.tryParse('${j['updatedAt']}')?.toLocal() ?? DateTime.now());
+      }
+    } catch (e) {
+      debugPrint('gold-api $metal: $e');
+    }
+    try {
+      final j = await _getJson(
+          'https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/$metal/USD',
+          attempts: 2);
+      final list = j['list'];
+      if (list is List && list.isNotEmpty) {
+        final first = list.first as Map;
+        final prices = first['spreadProfilePrices'] as List;
+        final p = prices.first as Map;
+        final bid = _num(p['bid']), ask = _num(p['ask']);
+        final ts = _num(first['ts']);
+        if (bid != null && ask != null && bid > 0) {
+          return ((bid + ask) / 2, ts != null ? DateTime.fromMillisecondsSinceEpoch(ts.toInt()) : DateTime.now());
+        }
+      }
+    } catch (e) {
+      debugPrint('swissquote $metal: $e');
+    }
+    return null;
+  }
+
   /// GET JSON, retrying a couple of times on rate limiting (429) or server errors.
   Future<Map<String, dynamic>> _getJson(String url, {int attempts = 3}) async {
     for (var i = 1;; i++) {
-      final r = await _http.get(Uri.parse(url)).timeout(const Duration(seconds: 12));
-      if (r.statusCode == 200) return jsonDecode(r.body) as Map<String, dynamic>;
+      final r = await _http.get(Uri.parse(url), headers: _headers).timeout(const Duration(seconds: 12));
+      if (r.statusCode == 200) {
+        final j = jsonDecode(r.body);
+        return j is Map<String, dynamic> ? j : {'list': j};
+      }
       final retry = r.statusCode == 429 || r.statusCode >= 500;
       if (!retry || i >= attempts) throw Exception('HTTP ${r.statusCode} for $url');
       await Future<void>.delayed(Duration(milliseconds: 1500 * i * i));
@@ -143,19 +181,14 @@ class PriceService {
   /// every 6 hours (rates are daily).
   Future<Quote> fetch({bool needFx = true}) async {
     final old = cached;
-    final gold = await _getJson('https://api.gold-api.com/price/XAU');
-    final xau = _num(gold['price']);
-    if (xau == null || xau < 500) throw Exception('bad gold price');
-    final sourceAt = DateTime.tryParse('${gold['updatedAt']}')?.toLocal() ?? DateTime.now();
+    final gold = await _spot('XAU', attempts: 3);
+    if (gold == null) throw Exception('no live gold price');
+    final (xau, sourceAt) = gold;
+    if (xau < 500) throw Exception('bad gold price');
 
     double? xag = old?.xag;
-    try {
-      final silver = await _getJson('https://api.gold-api.com/price/XAG', attempts: 2);
-      final v = _num(silver['price']);
-      if (v != null && v > 1) xag = v;
-    } catch (e) {
-      debugPrint('silver: $e');
-    }
+    final silver = await _spot('XAG');
+    if (silver != null && silver.$1 > 1) xag = silver.$1;
 
     var fx = old?.fx ?? const <String, double>{};
     var fxAt = old?.fxAt;
@@ -202,7 +235,7 @@ class PriceService {
       return compute(_parse, raw);
     }
     try {
-      final r = await _http.get(Uri.parse(historyUrl)).timeout(const Duration(seconds: 15));
+      final r = await _http.get(Uri.parse(historyUrl), headers: _headers).timeout(const Duration(seconds: 15));
       if (r.statusCode != 200) throw Exception('HTTP ${r.statusCode}');
       final list = await compute(_parse, r.body);
       if (list.isNotEmpty) {

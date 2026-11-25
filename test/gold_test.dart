@@ -20,10 +20,24 @@ Quote quote({double xau = 3110.35, double? xag = 31.1035, Map<String, double>? f
       fxAt: fxAt ?? DateTime.now(),
     );
 
-MockClient api({double xau = 3110.35, int status = 200, int goldStatus = 200}) => MockClient((r) async {
+MockClient api({double xau = 3110.35, int status = 200, int goldStatus = 200, bool swiss = false}) => MockClient((r) async {
       final u = r.url.toString();
       if (status != 200) return http.Response('err', status);
       if (u.contains('gold-api') && goldStatus != 200) return http.Response('slow down', goldStatus);
+      if (u.contains('swissquote') && swiss) {
+        final mid = u.contains('XAU') ? 3110.35 : 31.1035;
+        return http.Response(
+            jsonEncode([
+              {
+                'topo': {'platform': 'x'},
+                'spreadProfilePrices': [
+                  {'spreadProfile': 'premium', 'bid': mid - 0.5, 'ask': mid + 0.5}
+                ],
+                'ts': 1795564951000,
+              }
+            ]),
+            200);
+      }
       if (u.endsWith('/XAU')) return http.Response(jsonEncode({'price': xau, 'updatedAt': '2026-11-25T08:54:45Z'}), 200);
       if (u.endsWith('/XAG')) return http.Response(jsonEncode({'price': 40.0, 'updatedAt': '2026-11-25T08:54:45Z'}), 200);
       if (u.contains('er-api')) {
@@ -165,6 +179,15 @@ void main() {
       expect(p.rows.map((r) => r.label), contains('التولة'));
       p.dispose();
     });
+  });
+
+  test('backup live source when the main one is rate-limited', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final q = await PriceService(prefs, client: api(goldStatus: 429, swiss: true)).fetch();
+    expect(q.xau, closeTo(3110.35, 1e-9));
+    expect(q.xag, closeTo(31.1035, 1e-9));
+    expect(q.fromHistory, isFalse);
   });
 
   test('rate-limited live price falls back to the last daily close', () async {

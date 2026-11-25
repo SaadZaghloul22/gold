@@ -25,7 +25,7 @@ class AboutScreen extends StatelessWidget {
           ),
           const SectionTitle('مصادر البيانات'),
           Text(
-            '• سعر الذهب والفضة: gold-api.com\n'
+            '• سعر الذهب والفضة: gold-api.com (واحتياطياً Swissquote)\n'
             '• أسعار صرف العملات: open.er-api.com (ExchangeRate-API)\n'
             '• السجل اليومي للرسم البياني: سجل يومي مفتوح لسعر الجرام وأسعار الصرف.',
             style: body(),
