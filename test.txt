@@ -1,0 +1,25 @@
+00:00 +0: loading /home/runner/work/gold/gold/test/gold_test.dart
+00:00 +0: math gram price uses troy ounce and purity
+00:00 +1: math percent change
+00:00 +2: math jewellery purchase adds workmanship then VAT on both
+00:00 +3: math zakat: nisab is 85 g pure
+00:00 +4: countries and rates 41 unique countries/currencies with valid decimals
+00:00 +5: countries and rates pegs win over market rate; stale fx is ignored
+00:00 +6: countries and rates quote json round trip
+00:00 +7: service fetch caches; offline keeps cache
+gold-api XAU: Exception: HTTP 500 for https://api.gold-api.com/price/XAU
+swissquote XAU: Exception: HTTP 500 for https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD
+00:09 +8: service rejects nonsense price
+00:09 +9: service history parse skips bad rows and sorts
+00:09 +10: service controller: rows, change vs previous close, series
+00:09 +11: backup live source when the main one is rate-limited
+gold-api XAU: Exception: HTTP 429 for https://api.gold-api.com/price/XAU
+gold-api XAG: Exception: HTTP 429 for https://api.gold-api.com/price/XAG
+00:18 +12: rate-limited live price falls back to the last daily close
+gold-api XAU: Exception: HTTP 429 for https://api.gold-api.com/price/XAU
+swissquote XAU: Exception: HTTP 404 for https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD
+refresh: Exception: no live gold price
+00:25 +13: alerts fire once, then disabled
+00:25 +14: alerts store survives bad json; controller add/toggle/remove
+00:25 +15: format money and parse
+00:25 +16: All tests passed!
