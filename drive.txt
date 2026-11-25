@@ -1,0 +1,73 @@
+Resolving dependencies...
+Downloading packages...
+  cross_file 0.3.5+5 (0.4.0 available)
+  flutter_local_notifications 22.3.3 (23.0.4 available)
+  flutter_local_notifications_linux 8.0.2 (9.0.0 available)
+  flutter_local_notifications_platform_interface 12.2.0 (13.0.0 available)
+  flutter_local_notifications_web 1.0.0 (2.0.0 available)
+  flutter_local_notifications_windows 3.1.1 (4.0.1 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                          
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Settings file '/home/runner/work/gold/gold/android/settings.gradle.kts' line: 20
+
+* What went wrong:
+Error resolving plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+> A problem occurred configuring project ':gradle'.
+   > Could not resolve all artifacts for configuration 'classpath'.
+      > Could not resolve org.jetbrains.kotlin:kotlin-stdlib:2.2.21.
+        Required by:
+            buildscript of project ':gradle'
+         > Repository Gradle Central Plugin Repository is disabled due to earlier error below:
+            > Could not resolve org.jetbrains.kotlin:kotlin-gradle-plugins-bom:2.2.20.
+               > Could not get resource 'https://plugins.gradle.org/m2/org/jetbrains/kotlin/kotlin-gradle-plugins-bom/2.2.20/kotlin-gradle-plugins-bom-2.2.20.pom'.
+                  > Could not GET 'https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugins-bom/2.2.20/kotlin-gradle-plugins-bom-2.2.20.pom'. Received status code 429 from server: Too Many Requests
+> There are 6 more failures with identical causes.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 39s
+Running Gradle task 'assembleDebug'...                             39.7s
+[!] Gradle threw an error while downloading artifacts from the network.
+Retrying Gradle Build: #1, wait time: 100ms
+Running Gradle task 'assembleDebug'...                          
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Settings file '/home/runner/work/gold/gold/android/settings.gradle.kts' line: 20
+
+* What went wrong:
+Error resolving plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']
+> A problem occurred configuring project ':gradle'.
+   > Could not resolve all artifacts for configuration 'classpath'.
+      > Could not resolve org.jetbrains.kotlin:kotlin-stdlib:2.2.21.
+        Required by:
+            buildscript of project ':gradle'
+         > Repository Gradle Central Plugin Repository is disabled due to earlier error below:
+            > Could not resolve org.jetbrains.kotlin:kotlin-gradle-plugins-bom:2.2.20.
+               > Could not get resource 'https://plugins.gradle.org/m2/org/jetbrains/kotlin/kotlin-gradle-plugins-bom/2.2.20/kotlin-gradle-plugins-bom-2.2.20.pom'.
+                  > Could not GET 'https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugins-bom/2.2.20/kotlin-gradle-plugins-bom-2.2.20.pom'. Received status code 429 from server: Too Many Requests
+> There are 6 more failures with identical causes.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 6s
+Running Gradle task 'assembleDebug'...                              7.1s
+[!] Gradle threw an error while downloading artifacts from the network.
+Gradle task assembleDebug failed with exit code 1
