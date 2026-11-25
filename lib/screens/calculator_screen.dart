@@ -68,7 +68,7 @@ class _JewelryCalc extends StatefulWidget {
 }
 
 class _JewelryCalcState extends State<_JewelryCalc> with AutomaticKeepAliveClientMixin {
-  final grams = TextEditingController();
+  final weight = TextEditingController();
   final work = TextEditingController();
   final vat = TextEditingController(text: '0');
   int karat = 21;
@@ -79,7 +79,7 @@ class _JewelryCalcState extends State<_JewelryCalc> with AutomaticKeepAliveClien
 
   @override
   void dispose() {
-    grams.dispose();
+    weight.dispose();
     work.dispose();
     vat.dispose();
     super.dispose();
@@ -91,7 +91,7 @@ class _JewelryCalcState extends State<_JewelryCalc> with AutomaticKeepAliveClien
     final p = context.watch<PriceController>();
     final Country c = p.country;
     final price = p.gram(karat);
-    final g = parseNum(grams.text) ?? 0;
+    final g = parseNum(weight.text) ?? 0;
     final w = parseNum(work.text) ?? 0;
     final v = parseNum(vat.text) ?? 0;
     final r = price == null
@@ -111,16 +111,16 @@ class _JewelryCalcState extends State<_JewelryCalc> with AutomaticKeepAliveClien
       children: [
         const Align(alignment: AlignmentDirectional.centerStart, child: CountryButton()),
         const SizedBox(height: 12),
-        Wrap(spacing: 8, children: [
+        Wrap(spacing: 6, runSpacing: 6, children: [
           for (final k in karats)
-            ChoiceChip(label: Text('عيار $k'), selected: karat == k, onSelected: (_) => setState(() => karat = k)),
+            ChoiceChip(visualDensity: VisualDensity.compact, showCheckmark: false, label: Text('عيار $k'), selected: karat == k, onSelected: (_) => setState(() => karat = k)),
         ]),
         const SizedBox(height: 4),
         if (price != null)
           Text('سعر جرام عيار $karat الآن: ${moneyIn(price, c)}',
               style: TextStyle(fontSize: 13, color: scheme.onSurface.withValues(alpha: .7))),
         const SizedBox(height: 12),
-        _NumField(label: 'الوزن', suffix: 'جرام', controller: grams, onChanged: upd, fieldKey: const Key('calc-grams')),
+        _NumField(label: 'الوزن', suffix: 'جرام', controller: weight, onChanged: upd, fieldKey: const Key('calc-grams')),
         const SizedBox(height: 12),
         Row(children: [
           Expanded(
@@ -156,7 +156,7 @@ class _JewelryCalcState extends State<_JewelryCalc> with AutomaticKeepAliveClien
             child: r == null
                 ? const Text('في انتظار الأسعار…')
                 : Column(children: [
-                    _ResultLine('قيمة الذهب (${grams.text.isEmpty ? 0 : g} جم)', moneyIn(r.gold, c)),
+                    _ResultLine('قيمة الذهب (${grams(g)})', moneyIn(r.gold, c)),
                     _ResultLine('المصنعية', moneyIn(r.workmanship, c)),
                     _ResultLine('الضريبة', moneyIn(r.vat, c)),
                     const Divider(height: 18),

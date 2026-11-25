@@ -180,9 +180,11 @@ class _AddAlertSheetState extends State<_AddAlertSheet> {
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Text('تنبيه سعر — ${c.flag} ${c.name}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
         const SizedBox(height: 12),
-        Wrap(spacing: 8, children: [
+        Wrap(spacing: 6, runSpacing: 6, children: [
           for (final k in karats)
             ChoiceChip(
+              visualDensity: VisualDensity.compact,
+              showCheckmark: false,
               label: Text('عيار $k'),
               selected: karat == k,
               onSelected: (_) => setState(() {

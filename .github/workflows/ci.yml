@@ -61,6 +61,7 @@ jobs:
           set +e
           flutter test test_shots/shots_test.dart --reporter expanded > screenshots/shots.txt 2>&1; S=$?
           tail -40 screenshots/shots.txt
+          flutter test test_shots/probe_test.dart > screenshots/probe.txt 2>&1 || true
           echo "shots=$S" > screenshots/status.txt
           exit $S
       - name: Publish screenshots

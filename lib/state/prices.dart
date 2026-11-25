@@ -91,14 +91,15 @@ class PriceController extends ChangeNotifier {
     return out;
   }
 
-  /// Latest history day strictly before today (the previous close for the change badge).
+  /// Latest history day before the day of the shown price (the previous close for the badge).
   HistoryDay? get previousClose {
     if (_history.isEmpty) return null;
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
+    final q = _quote;
+    final ref = q != null && q.fromHistory ? q.sourceAt : DateTime.now();
+    final day = DateTime(ref.year, ref.month, ref.day);
     for (var i = _history.length - 1; i >= 0; i--) {
       final d = _history[i];
-      if (d.day.isBefore(today)) return d;
+      if (d.day.isBefore(day)) return d;
     }
     return null;
   }
