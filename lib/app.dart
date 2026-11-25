@@ -82,7 +82,7 @@ class HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   /// While the app is open, alerts are checked on every fresh quote.
   Future<void> _checkAlerts() async {
     final q = _prices.quote;
-    if (q == null || q.fetchedAt == _checkedFor) return;
+    if (q == null || q.fromHistory || q.fetchedAt == _checkedFor) return;
     _checkedFor = q.fetchedAt;
     if (!mounted) return;
     final alerts = context.read<AlertController>();

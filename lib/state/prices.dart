@@ -140,9 +140,15 @@ class PriceController extends ChangeNotifier {
       _error = null;
     } catch (e) {
       debugPrint('refresh: $e');
+      if (_quote == null || _quote!.fromHistory) {
+        if (_history.isEmpty) await loadHistory();
+        if (_history.isNotEmpty) _quote = Quote.fromHistory(_history.last);
+      }
       _error = _quote == null
           ? 'تعذّر جلب الأسعار. تأكد من اتصالك بالإنترنت ثم اسحب للتحديث.'
-          : 'لا يوجد اتصال — تُعرض آخر أسعار محفوظة.';
+          : _quote!.fromHistory
+              ? 'تعذّر جلب السعر اللحظي الآن — يُعرض سعر آخر إغلاق. اسحب للتحديث بعد قليل.'
+              : 'تعذّر التحديث الآن — تُعرض آخر أسعار محفوظة.';
     } finally {
       _loading = false;
       notifyListeners();

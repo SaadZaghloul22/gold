@@ -79,12 +79,18 @@ void main() {
     final alerts = AlertController(prefs);
     prices.autoRefresh = false;
     await tester.runAsync(() async {
-      await prices.refresh();
       await prices.loadHistory();
+      // shared CI IPs get rate-limited now and then: keep trying for a live quote
+      for (var i = 0; i < 8; i++) {
+        await prices.refresh();
+        if (prices.quote != null && !prices.quote!.fromHistory) break;
+        await Future<void>.delayed(const Duration(seconds: 15));
+      }
     });
     debugPrint('SHOTS: xau=${prices.quote?.xau} sar24=${prices.gram(24)} hist=${prices.history.length} change=${prices.change}');
     expect(prices.gram(24), isNotNull);
     expect(prices.history, isNotEmpty);
+    if (prices.quote!.fromHistory) debugPrint('SHOTS: live price unavailable, using last close');
 
     await tester.pumpWidget(RepaintBoundary(
       key: shotKey,

@@ -20,9 +20,10 @@ Quote quote({double xau = 3110.35, double? xag = 31.1035, Map<String, double>? f
       fxAt: fxAt ?? DateTime.now(),
     );
 
-MockClient api({double xau = 3110.35, int status = 200}) => MockClient((r) async {
+MockClient api({double xau = 3110.35, int status = 200, int goldStatus = 200}) => MockClient((r) async {
       final u = r.url.toString();
       if (status != 200) return http.Response('err', status);
+      if (u.contains('gold-api') && goldStatus != 200) return http.Response('slow down', goldStatus);
       if (u.endsWith('/XAU')) return http.Response(jsonEncode({'price': xau, 'updatedAt': '2026-11-25T08:54:45Z'}), 200);
       if (u.endsWith('/XAG')) return http.Response(jsonEncode({'price': 40.0, 'updatedAt': '2026-11-25T08:54:45Z'}), 200);
       if (u.contains('er-api')) {
@@ -164,6 +165,19 @@ void main() {
       expect(p.rows.map((r) => r.label), contains('التولة'));
       p.dispose();
     });
+  });
+
+  test('rate-limited live price falls back to the last daily close', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final p = PriceController(prefs, PriceService(prefs, client: api(goldStatus: 429)), defaultCountry: 'SA');
+    await p.refresh();
+    expect(p.quote!.fromHistory, isTrue);
+    expect(p.quote!.xau, closeTo(101 * troyOunceGrams, 1e-6));
+    expect(p.gram(24), closeTo(101 * 3.75, 1e-6));
+    expect(p.error, contains('آخر إغلاق'));
+    expect(prefs.getString('quote_v1'), isNull); // never cached
+    p.dispose();
   });
 
   group('alerts', () {

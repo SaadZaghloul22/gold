@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/gold_math.dart';
 import '../data/countries.dart';
 
 /// A snapshot of the spot prices (USD per troy ounce) and exchange rates.
@@ -16,7 +17,11 @@ class Quote {
     required this.fetchedAt,
     required this.fx,
     this.fxAt,
+    this.fromHistory = false,
   });
+
+  /// True for the daily-close fallback (never cached).
+  final bool fromHistory;
 
   final double xau;
   final double? xag;
@@ -38,6 +43,17 @@ class Quote {
 
   /// Older than 30 minutes at the source: shown with a "may be outdated" note.
   bool get stale => DateTime.now().difference(sourceAt) > const Duration(minutes: 30);
+
+  /// Last daily close, used only when no live or cached price is available.
+  factory Quote.fromHistory(HistoryDay d) => Quote(
+        xau: d.usdGram * troyOunceGrams,
+        xag: null,
+        sourceAt: DateTime(d.day.year, d.day.month, d.day.day, 23, 59),
+        fetchedAt: DateTime.now(),
+        fx: d.fx,
+        fxAt: DateTime(d.day.year, d.day.month, d.day.day, 23, 59),
+        fromHistory: true,
+      );
 
   Map<String, dynamic> toJson() => {
         'xau': xau,
@@ -112,10 +128,15 @@ class PriceService {
     }
   }
 
-  Future<Map<String, dynamic>> _getJson(String url) async {
-    final r = await _http.get(Uri.parse(url)).timeout(const Duration(seconds: 12));
-    if (r.statusCode != 200) throw Exception('HTTP ${r.statusCode} for $url');
-    return jsonDecode(r.body) as Map<String, dynamic>;
+  /// GET JSON, retrying a couple of times on rate limiting (429) or server errors.
+  Future<Map<String, dynamic>> _getJson(String url, {int attempts = 3}) async {
+    for (var i = 1;; i++) {
+      final r = await _http.get(Uri.parse(url)).timeout(const Duration(seconds: 12));
+      if (r.statusCode == 200) return jsonDecode(r.body) as Map<String, dynamic>;
+      final retry = r.statusCode == 429 || r.statusCode >= 500;
+      if (!retry || i >= attempts) throw Exception('HTTP ${r.statusCode} for $url');
+      await Future<void>.delayed(Duration(milliseconds: 1500 * i * i));
+    }
   }
 
   /// Live quote; falls back to the cached one when offline. FX is refreshed at most
@@ -129,7 +150,7 @@ class PriceService {
 
     double? xag = old?.xag;
     try {
-      final silver = await _getJson('https://api.gold-api.com/price/XAG');
+      final silver = await _getJson('https://api.gold-api.com/price/XAG', attempts: 2);
       final v = _num(silver['price']);
       if (v != null && v > 1) xag = v;
     } catch (e) {
@@ -141,7 +162,7 @@ class PriceService {
     final fxOld = fxAt == null || DateTime.now().difference(fxAt) > const Duration(hours: 6);
     if (needFx && fxOld) {
       try {
-        final j = await _getJson('https://open.er-api.com/v6/latest/USD');
+        final j = await _getJson('https://open.er-api.com/v6/latest/USD', attempts: 2);
         final rates = _rates(j['rates']);
         final t = _num(j['time_last_update_unix'])?.toInt();
         if (rates.isNotEmpty) {
