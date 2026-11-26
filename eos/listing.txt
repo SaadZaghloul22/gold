@@ -1,0 +1,63 @@
+[ar]
+اسم التطبيق (30):
+حاسبة نهاية الخدمة
+
+الوصف المختصر (80):
+احسب مكافأة نهاية الخدمة في السعودية والإمارات بدقة وفق نظام العمل — عربي وإنجليزي
+
+الوصف الكامل:
+احسب مكافأة نهاية الخدمة في ثوانٍ، وفق نظام العمل السعودي وقانون العمل الإماراتي — بدون إعلانات، بدون تسجيل، وتعمل بدون إنترنت.
+
+✦ السعودية (المواد 84 و85 و87)
+نصف أجر شهر عن كل سنة من الخمس الأولى، وأجر شهر كامل عن كل سنة بعدها، مع حساب كسور السنة. يطبّق نسب الاستقالة تلقائياً: لا شيء قبل سنتين، الثلث من 2 إلى 5 سنوات، الثلثان حتى 10 سنوات، وكاملة بعد 10 سنوات. ويشمل حالات المادة 87 والمادة 80 وفترة التجربة.
+
+✦ الإمارات (المادة 51 من المرسوم بقانون 33 لسنة 2021)
+21 يوماً من الراتب الأساسي عن كل سنة من الخمس الأولى، و30 يوماً بعدها، بعد إكمال سنة، مع تطبيق الحد الأقصى (أجر سنتين). الاستقالة لا تُنقص المكافأة.
+
+✦ تفاصيل واضحة
+مدة الخدمة بالسنوات والشهور والأيام، وما يخص الخمس سنوات الأولى وما بعدها، ونسبة الاستحقاق، والأجر اليومي.
+
+✦ بدل الإجازات
+أضف رصيد إجازتك السنوية غير المستخدم ليُحسب بدلها مع المكافأة.
+
+✦ أيام لا تُحسب
+أدخل أيام الإجازة بدون أجر أو الغياب لتُستبعد من مدة الخدمة.
+
+✦ السجل والمشاركة
+احفظ حساباتك وشاركها كنص واضح.
+
+✦ عربي وإنجليزي، ووضع ليلي
+
+تنبيه: النتيجة تقديرية للاسترشاد وفق النصوص العامة للنظام، ولا تُغني عن عقدك أو قرار الجهة المختصة.
+
+[en]
+Title (30):
+End of Service Calculator
+
+Short description (80):
+Saudi & UAE end-of-service gratuity, calculated by the labour law. Arabic & English
+
+Full description:
+Calculate your end-of-service gratuity in seconds under the Saudi Labour Law and the UAE Labour Law — no ads, no sign-up, works offline.
+
+✦ Saudi Arabia (Articles 84, 85, 87)
+Half a month's wage for each of the first five years and a full month for each year after, with fractions counted. Resignation rules applied automatically: nothing under 2 years, one third for 2–5 years, two thirds up to 10 years, full from 10 years. Covers Article 87, Article 80 and probation cases.
+
+✦ UAE (Article 51, Federal Decree-Law 33 of 2021)
+21 days of basic salary per year for the first five years and 30 days per year after, once one year is completed, capped at two years' wage. Resignation does not reduce the gratuity.
+
+✦ Clear breakdown
+Service in years, months and days, the amount for the first five years and after, entitlement ratio and daily wage.
+
+✦ Leave encashment
+Add your unused annual leave to include its payment.
+
+✦ Days not counted
+Enter unpaid leave or absence days to exclude them from service.
+
+✦ History and sharing
+Save calculations and share them as clear text.
+
+✦ Arabic and English, with dark mode
+
+Note: results are estimates based on the general provisions of the law and do not replace your contract or a decision of the competent authority.

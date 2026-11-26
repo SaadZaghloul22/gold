@@ -1,0 +1,65 @@
+[ar]
+اسم التطبيق (30):
+محوّل العملات والتحويلات
+
+الوصف المختصر (80):
+أسعار صرف يومية لأكثر من 160 عملة، وحاسبة حوالات تعرف بها ما يصل فعلاً
+
+الوصف الكامل:
+حوّل بين أكثر من 160 عملة بأسعار يومية، واعرف قبل ما تحوّل كم سيستلم أهلك فعلاً — بدون إعلانات وبدون تسجيل.
+
+✦ محوّل سريع
+اكتب المبلغ واختر العملتين، وتظهر النتيجة فوراً مع سعر الوحدة ووقت آخر تحديث. زر واحد لتبديل العملتين.
+
+✦ حاسبة الحوالات
+أدخل رسوم التحويل وفرق سعر الصرف لدى البنك أو شركة الصرافة، وشوف:
+• كم سيستلم المستفيد
+• السعر الفعلي بعد الرسوم
+• تكلفة التحويل مقارنة بالسعر العالمي
+وتقدر تحسب بالعكس: «عايز المستفيد يستلم كذا، أبعت كام؟»
+
+✦ وجهات شائعة بضغطة
+ريال سعودي إلى جنيه مصري، روبية هندية، روبية باكستانية، تاكا بنغلاديشي — ودرهم إماراتي إلى روبية هندية وبيسو فلبيني وغيرها.
+
+✦ حركة السعر
+رسم بياني لأسبوع أو شهر أو سنة مع أعلى وأدنى سعر ونسبة التغير.
+
+✦ عملاتك المفضلة
+شوف المبلغ محوّلاً لكل عملاتك المفضلة مرة واحدة، وعدّل القائمة كما تحب.
+
+✦ يعمل بدون إنترنت بآخر أسعار محفوظة، عربي وإنجليزي، ووضع ليلي
+
+تنبيه: الأسعار متوسط سعر السوق اليومي للاسترشاد، وقد تختلف عن أسعار البنوك وشركات الصرافة.
+
+[en]
+Title (30):
+Currency Converter & Remit
+
+Short description (80):
+Daily rates for 160+ currencies and a remittance calculator showing what arrives
+
+Full description:
+Convert between 160+ currencies with daily rates, and know exactly how much your family will receive before you send money — no ads, no sign-up.
+
+✦ Quick converter
+Type an amount, pick two currencies, and see the result instantly with the unit rate and last update time. One tap to swap.
+
+✦ Remittance calculator
+Enter the transfer fee and the provider's exchange-rate margin to see:
+• how much the recipient gets
+• the effective rate after fees
+• what the transfer costs you compared with the market rate
+Or work backwards: "they must receive X — how much do I send?"
+
+✦ Popular corridors in one tap
+SAR to EGP, INR, PKR, BDT — AED to INR, PHP and more.
+
+✦ Rate trend
+Week, month or year chart with high, low and change.
+
+✦ Your favourite currencies
+See the amount converted into all your favourites at once.
+
+✦ Works offline with the last saved rates, Arabic and English, dark mode
+
+Note: rates are daily mid-market rates for reference and may differ from banks and exchange houses.
